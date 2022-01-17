@@ -5,10 +5,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -53,7 +50,6 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        // Bonus mission; normal version returns allJobs
         return new ArrayList<>(allJobs);
     }
 
@@ -77,9 +73,10 @@ public class JobData {
 
         for (HashMap<String, String> row : allJobs) {
 
-            String aValue = row.get(column);
+            String aValue = row.get(column).toUpperCase();
+            String search = value.toUpperCase();
 
-            if (aValue.contains(value)) {
+            if (aValue.contains(search)) {
                 jobs.add(row);
             }
         }
@@ -99,7 +96,22 @@ public class JobData {
         loadData();
 
         // TODO - implement this method
-        return null;
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        String search = value.toUpperCase();
+
+        for (HashMap<String, String> row : allJobs) {
+
+            for (Map.Entry<String,String>column : row.entrySet()){
+                if (column.getValue().toUpperCase().contains(search)){
+                    if (!jobs.contains(row)){
+                        jobs.add(row);
+                    }
+                }
+            }
+
+        }
+
+        return jobs;
     }
 
     /**
